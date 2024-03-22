@@ -4,16 +4,23 @@
 
 #include QMK_KEYBOARD_H
 
+#define POINTER_SPEED 700
+#define POINTER_SNIPE_SPEED 200
+#define SLAVE_SYNC_TIME_MS 60
+
 enum sofle_layers {
     /* _M_XYZ = Mac Os, _W_XYZ = Win/Linux */
     _QWERTY,
     _LOWER,
     _RAISE,
-    _ADJUST,
+    _ADJUST//,
+	//_MOUSE
 };
 
 enum custom_keycodes {
     KC_QWERTY = SAFE_RANGE,
+	SNIPE,
+    EXIT_MOUSE,
     KC_PRVWD,
     KC_NXTWD,
     KC_LSTRT,
@@ -27,10 +34,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |  `   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  `   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | ESC  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  | Bspc |
+ * | TAB |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  | Bspc |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
+ * | LCTRL  |   A  |   S  |   D  |   F  |   G -------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
+ * |------+------+------+------+------+------|  GESC |    |       |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
  * --------------------+++-------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |Space | / LOWER /       \RAISE \  |Enter | [ | ] | RGUI |		|
@@ -39,9 +46,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT(
   KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                   KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
-  KC_ESC,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
-  KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,     XXXXXXX,KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
+  KC_CAPS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, QK_GESC,     XXXXXXX,KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
 		KC_LGUI,KC_LALT,KC_LCTL,  MO(_LOWER), KC_SPC,      		   KC_ENT, MO(_RAISE), KC_LBRC, KC_RBRC, KC_RGUI
 ),
 /* LOWER  
@@ -88,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | QK_BOOT|      |QWERTY|    |      |      |                    |      |      |      |      |      |      |
+ * |QK_BOOT|      |QWERTY|    |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      |MACWIN|      |      |      |-------.    ,-------|      | VOLDO| MUTE | VOLUP|      |      |
  * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
@@ -109,9 +116,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
        [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
        [1] = { ENCODER_CCW_CW(KC_PGUP, KC_PGDN) },
-       [2] = { ENCODER_CCW_CW(RGB_MOD, RGB_RMOD) },
-       [3] = { ENCODER_CCW_CW(_______, _______) },
-       //[4] = { ENCODER_CCW_CW(_______, _______) },
+       [2] = { ENCODER_CCW_CW(RGB_MOD, RGB_RMOD)},
+       [3] = { ENCODER_CCW_CW(_______, _______) }//,
+       //[4] = { ENCODER_CCW_CW(_______, _______) }
       };
 #endif
     // Default timeout for displaying logo on boot.
@@ -284,6 +291,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     static void render_status(void) {
         oled_write_P(PSTR("Sofle Pico\nv3.04\n~~~~~~~~~\n"), false);
         uint8_t n = get_current_wpm();
+
         char    wpm_counter[4];
         wpm_counter[3] = '\0';
         wpm_counter[2] = '0' + n % 10;
@@ -293,24 +301,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         oled_write(wpm_counter, false);
         led_t led_state = host_keyboard_led_state();
         oled_write_P(PSTR("\nCaps: "), false);
-        oled_write_P(led_state.caps_lock ? PSTR("on ") : PSTR("off"), false);
+        oled_write_P(led_state.caps_lock ? PSTR("ON ") : PSTR("OFF"), false);
         oled_write_P(PSTR("\n"), false);
+		
         switch (get_highest_layer(layer_state)) {
             case _QWERTY:
-                oled_write_P(PSTR("Qwerty Base"), false);
+                oled_write_P(PSTR("QWERTY"), false);
                 break;
             case _LOWER:
                 oled_write_P(PSTR("Numbers &\nSymbols"), false);
                 break;
             case _RAISE:
-                oled_write_P(PSTR("Navigation"), false);
-                break;
+                oled_write_P(PSTR("Navi &\n"), false);
+                break;	
+	        // case _MOUSE:
+                // oled_write_P(PSTR("MOUSE &\n"), false);
+                // break;		
             default:
-                oled_write_P(PSTR("Unknown"), false);
+                oled_write_P(PSTR("UNK  &\n"), false);
                 break;
         }
-    }
+	}
+	
+    static void render_rgbstatus(void) {
+		oled_clear();
+		uint8_t rgb_mode = rgb_matrix_get_mode();
+		
+		char rgb_disp[3];
+		
+        rgb_disp[2] = '0' + rgb_mode % 10;
+        rgb_disp[1] = (rgb_mode/= 10) % 10 ? '0' + (rgb_mode) % 10 : (rgb_mode / 10) % 10 ? '0' : ' ';
+        rgb_disp[0] = rgb_mode / 10 ? '0' + rgb_mode / 10 : ' ';
 
+        oled_write_P(PSTR("Sofle Pico\n V.Werle\n~~~~~~~~~\n"), false);
+		oled_write_P(PSTR("RGB:"), false);
+        oled_write(rgb_disp, false);
+		
+    }
+	
      bool oled_task_user(void) {
         static bool finished_logo = false;
         if ((timer_elapsed(startup_timer) < OLED_LOGO_TIMEOUT) && !finished_logo) {
@@ -319,17 +347,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 render_logo();
                 // 10 Chars per line. Set cursor used to simplify line wraps.
                 oled_set_cursor(0, 12);
-                oled_write_P(PSTR("v3.51"), false);
+                oled_write_P(PSTR("vWhoKnows?"), false);
                 oled_set_cursor(0, 13);
-                oled_write_P(PSTR("12-5-2023"), false);
+                oled_write_P(PSTR("03-22-2024"), false);
                 oled_set_cursor(0, 14);
                 oled_write_P(PSTR("by:github/"), false);
                 oled_set_cursor(0, 15);
-                oled_write_P(PSTR("JellyTitan"), false);
-            } else {
+                oled_write_P(PSTR("thewerle"), false);
+            } else {      
                 render_qmk_logo();
             }
-        } else {
             // Display the current keyboard state.
             if (!finished_logo) {
                 finished_logo = true;
@@ -337,9 +364,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 oled_clear();  
             } 
             if (is_keyboard_master()) {
+				
                 render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
             } else {
-                render_logo();
+                render_rgbstatus(); //renders curr rgb effect
+				// oled_clear();
+				// oled_set_cursor(0,12);
+				// oled_write_P(PSTR("left test"), false);
             }
         }
         return false;
@@ -481,6 +512,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
-
-
-
