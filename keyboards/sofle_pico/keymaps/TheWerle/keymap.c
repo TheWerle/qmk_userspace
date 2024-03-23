@@ -329,14 +329,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		
 		char rgb_disp[3];
 		
-        rgb_disp[2] = '0' + rgb_mode % 10;
+        rgb_disp[2] = rgb_mode % 10;
         rgb_disp[1] = (rgb_mode/= 10) % 10 ? '0' + (rgb_mode) % 10 : (rgb_mode / 10) % 10 ? '0' : ' ';
-        rgb_disp[0] = rgb_mode / 10 ? '0' + rgb_mode / 10 : ' ';
-
-        oled_write_P(PSTR("Sofle Pico\n V.Werle\n~~~~~~~~~\n"), false);
-		oled_write_P(PSTR("RGB:"), false);
+        rgb_disp[0] =  rgb_mode / 10 ? '0' + rgb_mode / 10 : ' ';
+		oled_write_P(PSTR("RGB:\n"), false);
         oled_write(rgb_disp, false);
-		
+		//return false;
     }
 	
      bool oled_task_user(void) {
@@ -368,9 +366,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
             } else {
                 render_rgbstatus(); //renders curr rgb effect
-				// oled_clear();
-				// oled_set_cursor(0,12);
-				// oled_write_P(PSTR("left test"), false);
             }
         }
         return false;
