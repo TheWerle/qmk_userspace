@@ -18,24 +18,8 @@ enum sofle_layers {
 	_MOUSE
 };
 
-// Automatically enable sniping-mode on the pointer layer.
-// #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
-
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
-#define PT_Z LT(_MOUSE, KC_Z)
-#define PT_SLSH LT(_MOUSE, KC_SLSH)
-
-
-#    define DRGSCRL KC_NO
-#    define DPI_MOD KC_NO
-#    define S_D_MOD KC_NO
-#    define SNIPING KC_NO
-
 enum custom_keycodes {
-    KC_QWERTY = SAFE_RANGE,
-	SNIPE,
-    EXIT_MOUSE
+    KC_QWERTY = SAFE_RANGE
 };
 
 	const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -123,13 +107,13 @@ enum custom_keycodes {
 
     [_MOUSE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    SNIPING, DRGSCRL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    KC_ACL0, _______ , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______,    KC_ACL0, _______ , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,    KC_ACL1, _______, KC_RCTL, KC_RALT, KC_RGUI, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, _______, DRGSCRL, SNIPING, EE_CLR,  QK_BOOT,    KC_ACL2,  _______, _______, _______, _______, XXXXXXX,
+       XXXXXXX, _______, _______, _______, EE_CLR,  QK_BOOT,    KC_ACL2,  _______, _______, _______, _______, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
        _______, _______, _______, _______, _______, _______,    _______, KC_BTN1, KC_BTN2, KC_BTN3, XXXXXXX, XXXXXXX
   //                    ╰───────────────────────────────────╯ ╰───────────────────────────────────╯
@@ -151,7 +135,7 @@ enum custom_keycodes {
         debug_enable = true;
         debug_matrix = true;
         // debug_keyboard=true;
-        // debug_mouse=true;
+        debug_mouse=true;
     }
     
     
@@ -297,15 +281,6 @@ enum custom_keycodes {
     }
 
     layer_state_t layer_state_set_user(layer_state_t state) {
-        #ifdef POINTING_DEVICE_ENABLE
-        #    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
-                layer_state_t layer_state_set_user(layer_state_t state) {
-                    dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
-                    return state;
-                }
-        #    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
-        #endif     // POINTING_DEVICE_ENABLE
-
         return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
     }
 
