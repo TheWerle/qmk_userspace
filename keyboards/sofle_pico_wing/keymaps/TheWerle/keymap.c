@@ -13,15 +13,10 @@ enum sofle_layers {
     _QWERTY,
     _LOWER,
     _RAISE,
-    _ADJUST//,
-	//_MOUSE
+    _ADJUST,
+	_MOUSE
 };
 
-enum custom_keycodes {
-    KC_QWERTY = SAFE_RANGE,
-	SNIPE,
-    EXIT_MOUSE
-};
 
 	const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	/*
@@ -102,14 +97,23 @@ enum custom_keycodes {
 	  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
 	  QK_REBOOT, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,
       XXXXXXX, XXXXXXX, _______,  _______, _______, MU_TOGG, _______, _______, _______, _______, _______, _______
+	  ),
+      [_MOUSE] = LAYOUT(
+	   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+	   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       _______, _______, _______, _______, KC_BTN1, _______, _______, KC_BTN2, _______, _______, _______, _______
 	  )
+
 	};
 	#ifdef ENCODER_MAP_ENABLE
 		const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 		   [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-		   [1] = { ENCODER_CCW_CW(RGB_MOD, RGB_RMOD) },
-		   [3] = { ENCODER_CCW_CW(KC_PGDN, KC_PGUP ) },
-		   [2] = { ENCODER_CCW_CW(AU_PREV, AU_NEXT) }
+		   [3] = { ENCODER_CCW_CW(RGB_MOD, RGB_RMOD) },
+		   [2] = { ENCODER_CCW_CW(AU_PREV, AU_NEXT) },
+           [1] = { ENCODER_CCW_CW(KC_PGDN, KC_PGUP ) },
+           [4] = { ENCODER_CCW_CW(XXXXXXX, XXXXXXX)}
 		  };
 	#endif
 
@@ -118,8 +122,12 @@ enum custom_keycodes {
 	  debug_enable=true;
 	  debug_matrix=true;
 	  //debug_keyboard=true;
-	  //debug_mouse=true;
+	  debug_mouse=true;
 	}
+    void pointing_device_init_user(void) {
+        set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+        set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+    }
 
     // Default timeout for displaying logo on boot.
     #ifndef OLED_LOGO_TIMEOUT
@@ -317,6 +325,9 @@ enum custom_keycodes {
 			case _ADJUST:
 				oled_write_P(PSTR("CONFIG "), false);
 				break;
+            case _MOUSE:
+				oled_write_P(PSTR("MOUSE  "), false);
+			break;
             default:
                 oled_write_P(PSTR("UNK    "), false);
                 break;
