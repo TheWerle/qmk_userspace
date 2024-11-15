@@ -5,9 +5,6 @@
 
 #include QMK_KEYBOARD_H
 
-#define POINTER_SPEED 700
-#define POINTER_SNIPE_SPEED 200
-#define SLAVE_SYNC_TIME_MS 60
 
 enum sofle_layers {
     /* _M_XYZ = Mac Os, _W_XYZ S= Win/Linux */
@@ -20,40 +17,15 @@ enum sofle_layers {
 
 
 	const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-/*
-	 * QWERTY
-	 * ,-----------------------------------------.                    ,-----------------------------------------.
-	 * |  `   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  BPSC|
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * | TAB |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P   |   -	|
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * |LSHFT|   A  |   S  |   D  |   F  |   G    -------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
-	 * |------+------+------+------+------+------|  GESC |    |       |------+------+------+------+------+------|
-	 * |LCTR|   Z  |   X  |   C  |   V  |   B  	 |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  \ 	|
-	 * --------------------+++-------------------/       /     \      \-----------------------------------------'
-	 *            | LGUI | LAlt | LCTR | LOWER  / Space /       \Enter \  |RAISE |   [   |   ] | RGUI |
-	 */
 
 	[_QWERTY] = LAYOUT(
 	  QK_GESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,   KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
 	  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_MINS,
-	  KC_LSFT,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,   KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+	  KC_LSFT,   SFT_T(KC_A),   KC_S,    KC_D,    KC_F,    KC_G,   KC_H,    KC_J,    KC_K,    KC_L, RSFT_T(KC_SCLN), KC_QUOT,
 	  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_BSLS,
 	  KC_LGUI,KC_LALT,KC_LCTL,MO(_LOWER),KC_SPC,QK_GESC, XXXXXXX, KC_ENT, MO(_RAISE),KC_LBRC,KC_RBRC, KC_APP
-	),
-	/* LOWER
-	 * ,-----------------------------------------.                    ,-----------------------------------------.
-	 * |      |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * |  `   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   \  | F12  |
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * | Tab  |   !  |   @  |   #  |   $  |   %  |-------.    ,-------|   ^  |   6  |   7  |   8  |   *  |   |  |
-	 * |------+------+------+------+------+------|RGB_TOG|    |       |------+------+------+------+------+------|
-	 * | Shift|  =   |  -   |  +   |   {  |   }  |-------|    |-------|   [  |   ]  |   ;  |   :  |   -  | Shift|
-	 * `-----------------------------------------/       /     \      \-----------------------------------------'
-	 *            | LGUI | LAlt | LCTR |LOWER | / Space /       \Enter \  |RAISE | 0    | .     |
-	 *            |      |      |      |      |/       /         \      \ |      |      |      |      |
-	 */
+	  ),
+	  
 	[_LOWER] = LAYOUT(
 	  QK_GESC,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5, KC_F6,   KC_F7,  KC_F8, KC_F9,  KC_F10,  KC_F11,
 	  _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_NUM,  KC_P7,  KC_P8, KC_P9,  KC_PSLS, KC_F12,
@@ -61,19 +33,7 @@ enum sofle_layers {
 	  _______,  KC_EQL, KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, KC_END,  KC_P1,  KC_P2, KC_P3,  KC_PMNS, _______,
 	  _______, _______, _______, _______, _______, RGB_TOG, _______,_______,_______,KC_P0,  KC_PDOT, KC_PPLS
 	),
-	/* RAISE
-	 * ,----------------------------------------.                    ,-----------------------------------------.
-	 * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * | Esc  | Ins  | Pscr | Menu |      |DB_TOGG|                    |      | PWrd |  Up  | NWrd | DLine| Bspc |
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * | Tab  | LAt  | LCtl |LShift|      | Caps |-------.    ,-------|      | Left | Down | Right |  Del | Bspc |
-	 * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
-	 * |Shift | Undo |  Cut | Copy | Paste|      |-------|    |-------|      | LStr |      | LEnd |      | Shift|
-	 * `-----------------------------------------/       /     \      \-----------------------------------------'
-	 *            | LGUI | LAlt | LCTR |LOWER | / Space /       \Enter \  |RAISE | RCTR | RAlt | RGUI |
-	 *            |      |      |      |      |/       /         \      \ |      |      |      |      |
-	 */
+
     [_RAISE] = LAYOUT(
     _______, _______, _______, _______, RGB_SAI, RGB_SAD,RGB_M_SW, RGB_M_SN,DB_TOGG, RGB_MOD,RGB_RMOD, _______,
     _______,  KC_INS, KC_PSCR, KC_APP , RGB_VAI, RGB_TOG, KC_PGUP, _______, KC_UP,   _______, _______, KC_BSPC,
@@ -81,19 +41,7 @@ enum sofle_layers {
     _______, KC_UNDO, KC_CUT,  KC_COPY, KC_PASTE,XXXXXXX, _______, _______, XXXXXXX, _______, XXXXXXX, _______,
     XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
-/* ADJUST
-	 * ,-----------------------------------------.                    ,-----------------------------------------.
-	 * |      |      |RGBSp+|RGBV+ |RGBS+ |RGBH+ |                    |      |AU NXT|AU PRV|AU ON |AU OFF|AU TOG|
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * |QK_BOOT|     |RGBSp-|RGBV- |RGBS- |RGBH- |                    |      |      |      |      |      |      |
-	 * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-	 * |      |      |MACWIN|      |      |      |-------.    ,-------|      | VOLDO| MUTE | VOLUP|      |      |
-	 * |------+------+------+------+------+------| MU TOG|    |       |------+------+------+------+------+------|
-	 * |      |      |      |      |      |      |-------|    |-------|      | PREV | PLAY | NEXT |      |      |
-	 * `-----------------------------------------/       /     \      \-----------------------------------------'
-	 *            | LGUI | LAlt | LCTR | LOWER| / Space /       \Enter \  |RAISE | RCTR | RAlt | RGUI |
-	 *            |      |      |      |      |/       /         \      \ |      |      |      |      |
-	 */
+
 	  [_ADJUST] = LAYOUT(
 	  XXXXXXX, XXXXXXX, RGB_SPI,  RGB_VAI, RGB_SAI, RGB_HUI, XXXXXXX, AU_NEXT, AU_PREV,   AU_ON,  AU_OFF, AU_TOGG,
       QK_BOOT, XXXXXXX, RGB_SPD, RGB_VAD, RGB_SAD, RGB_HUD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -101,6 +49,7 @@ enum sofle_layers {
 	  QK_REBOOT, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,
       XXXXXXX, XXXXXXX, _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______
 	  ),
+	  
 	  [_MOUSE] = LAYOUT(
 	   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -332,23 +281,6 @@ enum sofle_layers {
         }
     }
 
-
-
-    // static void render_rgbstatus(void) {
-		// oled_clear();
-		// uint8_t rgb_mode = rgb_matrix_get_mode();
-
-		// char rgb_disp[3];
-
-        // rgb_disp[2] = rgb_mode % 10;
-        // rgb_disp[1] = (rgb_mode/= 10) % 10 ? '0' + (rgb_mode) % 10 : (rgb_mode / 10) % 10 ? '0' : ' ';
-        // rgb_disp[0] =  rgb_mode / 10 ? '0' + rgb_mode / 10 : ' ';
-		// oled_write_P(PSTR("RGB:\n"), false);
-        // oled_write(rgb_disp, false);
-
-        // }
-    // }
-
      bool oled_task_user(void) {
         static bool finished_logo = false;
         if ((timer_elapsed(startup_timer) < OLED_LOGO_TIMEOUT) && !finished_logo) {
@@ -377,7 +309,8 @@ enum sofle_layers {
             if (is_keyboard_master()) {
                 render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
             } else {
-                render_logo();
+                //render_logo();
+				render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
             }
         }
         return false;
