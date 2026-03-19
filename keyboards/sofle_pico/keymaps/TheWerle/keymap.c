@@ -23,7 +23,7 @@ enum sofle_layers {
 	  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_MINS,
 	  KC_LSFT,   SFT_T(KC_A),   KC_S,    KC_D,    KC_F,    KC_G,   KC_H,    KC_J,    KC_K,    KC_L, RSFT_T(KC_SCLN), KC_QUOT,
 	  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_BSLS,
-	  KC_LGUI,KC_LALT,KC_LCTL,MO(_LOWER),KC_SPC,QK_GESC, XXXXXXX, KC_ENT, MO(_RAISE),KC_LBRC,KC_RBRC, KC_APP
+	  KC_LGUI,KC_LALT,KC_LCTL,LT(1,KC_DEL),KC_SPC,QK_GESC, XXXXXXX, KC_ENT, MO(_RAISE),KC_LBRC,KC_RBRC, KC_APP
 	  ),
 	  
 	[_LOWER] = LAYOUT(
@@ -31,7 +31,7 @@ enum sofle_layers {
 	  _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_NUM,  KC_P7,  KC_P8, KC_P9,  KC_PSLS, KC_F12,
 	  _______, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, KC_HOME, KC_P4,  KC_P5, KC_P6,  KC_PAST, KC_PIPE,
 	  _______,  KC_EQL, KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, KC_END,  KC_P1,  KC_P2, KC_P3,  KC_PMNS, _______,
-	  _______, _______, _______, _______, _______, RGB_TOG, _______,_______,_______,KC_P0,  KC_PDOT, KC_PPLS
+	  _______, _______, _______, _______, _______, RGB_TOG, _______, _______,KC_P0, KC_PDOT, KC_PPLS,_______
 	),
 
     [_RAISE] = LAYOUT(
