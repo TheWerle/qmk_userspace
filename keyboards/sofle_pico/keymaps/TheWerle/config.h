@@ -5,6 +5,7 @@
 
 #define MASTER_RIGHT
 #define SPLIT_POINTING_ENABLE
+#define DYNAMIC_KEYMAP_LAYER_COUNT 5
 
 /* Mouse settings */
 #define POINTING_DEVICE_RIGHT

@@ -31,22 +31,22 @@ enum sofle_layers {
 	  _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_NUM,  KC_P7,  KC_P8, KC_P9,  KC_PSLS, KC_F12,
 	  _______, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, KC_HOME, KC_P4,  KC_P5, KC_P6,  KC_PAST, KC_PIPE,
 	  _______,  KC_EQL, KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, KC_END,  KC_P1,  KC_P2, KC_P3,  KC_PMNS, _______,
-	  _______, _______, _______, _______, _______, RGB_TOG, _______, _______,KC_P0, KC_PDOT, KC_PPLS,_______
+	  _______, _______, _______, _______, _______, _______, _______, _______,KC_P0, KC_PDOT, KC_PPLS,_______
 	),
 
     [_RAISE] = LAYOUT(
-    _______, _______, _______, _______, RGB_SAI, RGB_SAD,RGB_M_SW, RGB_M_SN,DB_TOGG, RGB_MOD,RGB_RMOD, _______,
-    _______,  KC_INS, KC_PSCR, KC_APP , RGB_VAI, RGB_TOG, KC_PGUP, _______, KC_UP,   _______, _______, KC_BSPC,
-    _______, KC_LALT, KC_LCTL, KC_LSFT, RGB_VAD, KC_CAPS, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
+    _______, _______, _______, _______, _______, _______,_______, _______,_______, _______,_______, _______,
+    _______,  KC_INS, KC_PSCR, KC_APP , _______, _______, KC_PGUP, _______, KC_UP,   _______, _______, KC_BSPC,
+    _______, KC_LALT, KC_LCTL, KC_LSFT, _______, KC_CAPS, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_BSPC,
     _______, KC_UNDO, KC_CUT,  KC_COPY, KC_PASTE,XXXXXXX, _______, _______, XXXXXXX, _______, XXXXXXX, _______,
     XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 	  [_ADJUST] = LAYOUT(
-	  XXXXXXX, XXXXXXX, RGB_SPI,  RGB_VAI, RGB_SAI, RGB_HUI, XXXXXXX, AU_NEXT, AU_PREV,   AU_ON,  AU_OFF, AU_TOGG,
-      QK_BOOT, XXXXXXX, RGB_SPD, RGB_VAD, RGB_SAD, RGB_HUD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-	  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
-	  QK_REBOOT, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,
+	  RM_TOGG, RM_NEXT, RM_HUEU,  RM_SATU, RM_VALU, RM_SPDU, XXXXXXX, AU_NEXT, AU_PREV,   AU_ON,  AU_OFF, AU_TOGG,
+      QK_BOOT, RM_PREV, RM_HUED, RM_SATD, RM_VALD,  RM_SPDD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+	  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, RM_SPDU, RM_FLGN, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
+	  QK_REBOOT, XXXXXXX, XXXXXXX,XXXXXXX, RM_SPDD, RM_FLGP, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,
       XXXXXXX, XXXXXXX, _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______
 	  ),
 	  
@@ -55,14 +55,14 @@ enum sofle_layers {
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 	   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-       _______, _______, _______, _______, KC_BTN1, _______, _______, KC_BTN2, KC_BTN3, _______, _______, _______
+       _______, _______, _______, _______, MS_BTN1, _______, _______, MS_BTN2, MS_BTN3, _______, _______, _______
 	  )
 
 	};
 	#ifdef ENCODER_MAP_ENABLE
 		const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 		   [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-		   [1] = { ENCODER_CCW_CW(RGB_MOD, RGB_RMOD)},
+		   [1] = { ENCODER_CCW_CW(RM_NEXT, RM_PREV)},
 		   [2] = { ENCODER_CCW_CW(AU_PREV, AU_NEXT) },
            [3] = { ENCODER_CCW_CW(KC_PGDN, KC_PGUP )},
 		   [4] = { ENCODER_CCW_CW(XXXXXXX, XXXXXXX )}
@@ -83,8 +83,8 @@ enum sofle_layers {
         #define OLED_LOGO_TIMEOUT 10000
     #endif
 
-    #ifdef OLED_ENABLE
 
+    #ifdef OLED_ENABLE
     uint16_t startup_timer;
 
     oled_rotation_t oled_init_user(oled_rotation_t rotation) {
